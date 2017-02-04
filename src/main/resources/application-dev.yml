@@ -1,0 +1,7 @@
+server:
+  port: 8080
+  context-path: /wechat
+demo:
+  demoItemOne: A
+  demoItemTwo: B
+

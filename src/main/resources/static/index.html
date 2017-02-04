@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>cs</title>
+
+
+    <style>
+        .cancael-main{
+            width:94%;
+            margin-left:2%;
+            border:solid 1px #ccc;
+            border-radius: 5px;
+        }
+        .cancael-main h3,p{
+            text-align:left;
+            margin:1% 5%;
+        }
+        .cancael-laber{
+            display:block;
+            width:90%;
+            margin:5%;
+            height:3rem;
+            line-height:3rem;
+            border:solid 1px #ccc;
+            text-align:center;
+
+
+        }
+        .cancael-btn{
+            display:block;
+            width:90%;
+            margin:5%;
+            height:3rem;
+            line-height:3rem;
+            border:solid 1px #cc404a;
+            border-radius: 5px;
+            color:#cc404a;
+            text-align:center;
+        }
+
+    </style>
+</head>
+
+<body style="text-align: center;">
+<%
+System.out.print(openId);
+%>
+<br />
+
+
+<br />
+<!--
+    <div class="cancael-main">
+        <h3>通联支付cancel接口</h3>
+        <p>使用场景： <br/>只能撤销当天的交易，全额退款，实时返回退款结果.</p>
+        <label class="cancael-laber">订单号码：<input type="text" id="productOrderCode" value="" placeholder="请输入订单号"/></label>
+        <label class="cancael-laber">订单金额：<input type="number" id="productOrderAmount" value="" placeholder="请输入订单金额"/></label>
+         <a class="cancael-btn" href="javascript:TLcancel();">支付撤销</a>
+    </div>
+    <br /> -->
+<div class="cancael-main">
+    <h3>通联支付refund接口</h3>
+    <p>使用场景： <br/>支持部分金额退款，隔天交易退款</p>
+    <label class="cancael-laber">订单号码：<input type="text" id="refundOrderCode" value="" placeholder="请输入订单号"/></label>
+    <label class="cancael-laber">订单金额：<input type="number" id="refundOrderAmount" value="" placeholder="请输入订单金额"/></label>
+    <a class="cancael-btn" href="javascript:TLrefund();">确定退款</a>
+</div>
+<script type="text/javascript">
+    function TLcancel(){
+        var oldreqsn = $("#productOrderCode").val();
+        var trxamt = $("#productOrderAmount").val();
+        if(oldreqsn==""||trxamt==""){
+            alert("填完");
+            return;
+        }
+        var url = BASE_PATH + "/tlCancel.action?oldreqsn="+oldreqsn+"&trxamt="+trxamt;
+        $.ajax({
+            type : "get",
+            url : url,
+            cache : false,
+            dataType : "json",
+            success : function(json) {
+                if(json.replyCode=="0"){
+                    $("#productOrderCode").val("");
+                    alert(json.replyMsg);
+                }else{
+                    alert(json.replyMsg);
+                }
+
+            }
+        });
+    };
+    //
+    function TLrefund(){
+        var oldreqsn = $("#refundOrderCode").val();
+        var trxamt = $("#refundOrderAmount").val();
+        if(oldreqsn==""||trxamt==""){
+            alert("填完");
+            return;
+        }
+        var url = BASE_PATH + "/index/tlRefund.do?orderCode="+oldreqsn+"&totalPayAmount="+trxamt;
+        $.ajax({
+            type : "get",
+            url : url,
+            cache : false,
+            dataType : "json",
+            success : function(json) {
+                if(json.replyCode=="1"){
+                    $("#refundOrderCode").val("");
+                    alert(json.replyMsg);
+                }else{
+                    alert(json.replyMsg);
+                }
+            }
+        });
+    };
+</script>
+
+</body>
+</html>
