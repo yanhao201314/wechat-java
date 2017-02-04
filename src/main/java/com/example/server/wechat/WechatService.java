@@ -125,6 +125,7 @@ public class WechatService {
         Long createTimeByDB = Long.parseLong(time);
         Long nowTime = Long.parseLong(new Date().getTime()+"");
         //判断票据是否在有效时间内
+        //在有效期内直接获取 否则去微信服务器拿
         if(createTimeByDB+7000000 > nowTime ){
             token = bean.getAccessToken();
         }else{
