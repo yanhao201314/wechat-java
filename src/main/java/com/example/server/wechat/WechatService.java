@@ -9,6 +9,7 @@ import com.example.util.WeixinUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -119,14 +120,15 @@ public class WechatService {
         AccessToken accessToken = new AccessToken();
         String token ="";
         Integer expiresIn = 7200;
-
+        //数据库查询accessToken
         AccessTokenBean bean = accessTokenMapper.findAccessTokenById(1);
+        String tokenForDB = bean.getAccessToken();
         String time = bean.getCreateTime();
         Long createTimeByDB = Long.parseLong(time);
         Long nowTime = Long.parseLong(new Date().getTime()+"");
         //判断票据是否在有效时间内
         //在有效期内直接获取 否则去微信服务器拿
-        if(createTimeByDB+7000000 > nowTime ){
+        if(!StringUtils.isEmpty(tokenForDB) && !StringUtils.isEmpty(createTimeByDB) && createTimeByDB+7000000 > nowTime ){
             token = bean.getAccessToken();
         }else{
 
