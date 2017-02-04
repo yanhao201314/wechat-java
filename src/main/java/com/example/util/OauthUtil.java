@@ -1,5 +1,6 @@
 package com.example.util;
 
+import com.example.model.po.AccessToken;
 import net.sf.json.JSONObject;
 
 import java.util.HashMap;
@@ -25,18 +26,17 @@ public class OauthUtil {
 
     }
 
-    public static String getOauthAccessToken(String code){
+    public static Map getOauthAccessToken(String code){
         Map<String,String> map = new HashMap<>();
         String openid = "";
         String url = OAUTH_ACCESS_TOKEN_URL.replace("APPID", APPID).replace("SECRET", APPSECRET).replace("CODE", code);
         JSONObject jsonObject = httpRequest(url, "GET", null);
         if(jsonObject!=null){
-//            map.put("access_token",jsonObject.getString("access_token"));
-//            map.put("expires_in",jsonObject.getString("expires_in"));
-//            map.put("openid",jsonObject.getString("openid"));
-            openid = jsonObject.getString("openid");
+            map.put("access_token",jsonObject.getString("access_token"));
+            map.put("expires_in",jsonObject.getString("expires_in"));
+            map.put("openid",jsonObject.getString("openid"));
+//            openid = jsonObject.getString("openid");
         }
-        //String json = JSONObject.fromObject(map).toString();
-        return openid;
+        return map;
     }
 }

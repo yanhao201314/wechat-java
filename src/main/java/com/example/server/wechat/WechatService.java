@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -95,13 +96,17 @@ public class WechatService {
     //
     public String queryOpenId(String code){
         String openid = "";
-        openid = OauthUtil.getOauthAccessToken(code);
+        Map<String,String> map = OauthUtil.getOauthAccessToken(code);
+        openid = map.get("openid");
         return openid;
     }
 
     public String redirectView(String code,String redirect,String fromType){
 
-        String openId = OauthUtil.getOauthAccessToken(code);
+        String openId = "";
+        Map<String,String> map = OauthUtil.getOauthAccessToken(code);
+        openId = map.get("openid");
+
         String redirect_url = "";
         redirect_url = redirect.replace("OPENID",openId);
         redirect_url +="&appId=wxe69a2b767aee43b0&fromType="+fromType;

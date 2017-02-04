@@ -71,7 +71,7 @@ public class WechatConroller {
         return json;
     }
 
-    //微信oauth查看openId
+    //微信oauth 页面跳转
     @GetMapping(value = "/oauth",produces = "text/plain;charset=utf-8")
     public void oauth(@RequestParam(name = "code" ,required = false) String code,
                       @RequestParam(name = "redirect" ,required = false) String redirect,
@@ -88,15 +88,6 @@ public class WechatConroller {
         String url = wechatService.redirectView(code,redirect,fromType);
 
         response.sendRedirect(url);
-    }
-
-    @Autowired
-    private AccessTokenMapper accessTokenMapper;
-    @GetMapping(value = "/haha",produces = "text/plain;charset=utf-8")
-    public void getDB() throws Exception {
-
-        accessTokenMapper.findAccessTokenById(1);
-        System.out.print(accessTokenMapper.findAccessTokenById(1).getAccessToken());
     }
 
 }
